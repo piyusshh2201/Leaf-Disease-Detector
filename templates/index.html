@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Leaf Disease Detector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="page-backdrop" aria-hidden="true">
+      <div class="bg-photo bg-farmer"></div>
+      <div class="bg-photo bg-plants"></div>
+      <div class="bg-photo bg-leaves"></div>
+      <div class="bg-overlay"></div>
+    </div>
+    <div class="floating-leaf leaf-one" aria-hidden="true">🍃</div>
+    <div class="floating-leaf leaf-two" aria-hidden="true">🌿</div>
+    <div class="floating-leaf leaf-three" aria-hidden="true">🍂</div>
+    <aside class="side-plants side-plants-left" aria-hidden="true">
+      <span>🪴</span><span>🌿</span><span>🌱</span>
+    </aside>
+    <aside class="side-plants side-plants-right" aria-hidden="true">
+      <span>🌿</span><span>🪴</span><span>☘️</span>
+    </aside>
+    <div class="vine vine-left" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="vine vine-right" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="leaf-sprinkles" aria-hidden="true"><span>✦</span><span>●</span><span>✦</span><span>●</span></div>
+    <main class="container">
+      <section class="hero">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <path d="M52 10C31 10 17 20 14 42c11 5 26 1 33-10C51 25 52 17 52 10Z" />
+            <path d="M16 48c9-9 18-16 29-22M29 35l1 10M38 28l8 1" />
+          </svg>
+        </div>
+        <h1>Leaf Disease Detector</h1>
+        <p>Upload a clear photo of a leaf and the app will suggest the most likely disease and a basic remedy.</p>
+      </section>
+
+      <section class="card">
+        <form method="post" enctype="multipart/form-data">
+          <label class="upload-box" for="image">
+            <span>Choose a leaf image</span>
+            <input id="image" name="image" type="file" accept="image/*" required>
+          </label>
+          <button type="submit">Predict disease</button>
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flash-list">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+      </section>
+
+      {% if result %}
+        <section class="card result">
+          <div class="result-heading">
+            <span class="result-leaf" aria-hidden="true">✦</span>
+            <h2>Plant health result</h2>
+          </div>
+          <div class="disease-highlight">
+            <span class="result-kicker">Detected disease</span>
+            <p class="label">{{ result.predicted_label }}</p>
+            <p class="confidence">Confidence: {{ result.confidence }}%</p>
+          </div>
+          <div class="tip-box solution-highlight">
+            <span class="solution-icon" aria-hidden="true">🌱</span>
+            <div>
+              <span class="result-kicker">Recommended care</span>
+              <h3>Solution</h3>
+            <p>{{ result.remedy_tip }}</p>
+            </div>
+          </div>
+        </section>
+      {% endif %}
+    </main>
+    <div class="garden-landscape" aria-hidden="true">
+      <span class="plant plant-left">🌱</span>
+      <span class="plant plant-mid">🌿</span>
+      <span class="plant plant-right">🌱</span>
+    </div>
+  </body>
+</html>
