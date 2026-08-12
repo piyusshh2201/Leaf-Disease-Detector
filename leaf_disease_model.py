@@ -154,7 +154,11 @@ def ensure_model_exists() -> Dict[str, object]:
         filename=HF_MODEL_FILENAME,
     )
 
+    print("STARTING MODEL LOAD...", flush=True)
+
     bundle = joblib.load(model_path)
+
+    print("MODEL LOADED SUCCESSFULLY!", flush=True)
 
     if bundle.get("feature_version") != MODEL_VERSION:
         raise RuntimeError(
