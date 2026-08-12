@@ -7,6 +7,7 @@ from typing import Dict, Tuple
 
 import joblib
 import numpy as np
+from huggingface_hub import hf_hub_download
 from PIL import Image
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.pipeline import Pipeline
@@ -15,7 +16,8 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 TRAIN_DIR = DATA_DIR / "train"
-MODEL_PATH = BASE_DIR / "static" / "models" / "leaf_disease_model.joblib"
+HF_REPO_ID = "piyush2201/LeafDiseaseModel"
+HF_MODEL_FILENAME = "leaf_disease_model.joblib"
 MAX_IMAGES_PER_CLASS = 220
 MODEL_VERSION = 2
 
@@ -143,12 +145,19 @@ def train_model() -> Dict[str, object]:
 
 
 def ensure_model_exists() -> Dict[str, object]:
-    if not MODEL_PATH.exists():
-        return train_model()
+    model_path = hf_hub_download(
+        repo_id=HF_REPO_ID,
+        filename=HF_MODEL_FILENAME,
+    )
 
-    bundle = joblib.load(MODEL_PATH)
+    bundle = joblib.load(model_path)
+
     if bundle.get("feature_version") != MODEL_VERSION:
-        return train_model()
+        raise RuntimeError(
+            f"Model version mismatch. Expected {MODEL_VERSION}, "
+            f"but found {bundle.get('feature_version')}."
+        )
+
     return bundle
 
 
