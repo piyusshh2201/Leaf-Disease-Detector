@@ -130,13 +130,13 @@ def train_model() -> Dict[str, object]:
             (
                 "classifier",
                 ExtraTreesClassifier(
-                 n_estimators=100,
-                 random_state=42,
-                  n_jobs=-1,
-                 class_weight="balanced_subsample",
-                 min_samples_leaf=1,
-                 max_depth=30,
-),
+    n_estimators=40,
+random_state=42,
+n_jobs=-1,
+class_weight="balanced_subsample",
+min_samples_leaf=2,
+max_depth=18,
+)
             ),
         ]
     )
@@ -208,3 +208,9 @@ def get_remedy_tip(label: str) -> str:
     if "spider" in label_lower or "mites" in label_lower:
         return "Wash the leaves, increase humidity slightly, and use insecticidal soap if needed."
     return "Remove affected leaves, improve airflow, and contact a local agricultural extension service for a targeted treatment plan."
+
+
+if __name__ == "__main__":
+    print("Training new model...")
+    train_model()
+    print("New model created successfully!")
