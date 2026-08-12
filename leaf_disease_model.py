@@ -18,6 +18,9 @@ DATA_DIR = BASE_DIR / "data"
 TRAIN_DIR = DATA_DIR / "train"
 HF_REPO_ID = "piyush2201/LeafDiseaseModel"
 HF_MODEL_FILENAME = "leaf_disease_model.joblib"
+
+MODEL_PATH = BASE_DIR / "static" / "models" / "leaf_disease_model.joblib"
+
 MAX_IMAGES_PER_CLASS = 220
 MODEL_VERSION = 2
 
@@ -127,12 +130,13 @@ def train_model() -> Dict[str, object]:
             (
                 "classifier",
                 ExtraTreesClassifier(
-                    n_estimators=300,
-                    random_state=42,
-                    n_jobs=-1,
-                    class_weight="balanced_subsample",
-                    min_samples_leaf=1,
-                ),
+                 n_estimators=100,
+                 random_state=42,
+                  n_jobs=-1,
+                 class_weight="balanced_subsample",
+                 min_samples_leaf=1,
+                 max_depth=30,
+),
             ),
         ]
     )
