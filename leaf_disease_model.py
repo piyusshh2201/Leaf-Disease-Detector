@@ -168,7 +168,6 @@ def ensure_model_exists() -> Dict[str, object]:
 
     return bundle
 
-
 def predict_disease(image_path: str | os.PathLike[str]) -> Tuple[str, float]:
     bundle = ensure_model_exists()
     model = bundle["model"]
